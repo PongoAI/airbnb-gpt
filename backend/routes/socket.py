@@ -48,6 +48,7 @@ async def websocket_endpoint(websocket: WebSocket):
         Each key in the JSON should be an attribute taken from the query, and each value should be an object with properties "operator" and either "valueNumber" or "valueBoolean" or "valueString".
         The options for "operator" are "Equal", "GreaterThan", and "LessThan". The value for this operator can be a boolean, or number. If it's a number, use the key "valueNumber", and if it's a boolean use "valueBoolean", and if it's a string use "valueString"
         Below are the possible keys for your JSON and what aspects of the user's query they represent. Only include a property if the user's query directly or indirectly mentions it.
+        You do not support querying on price, so skip it if the user mentions it
 
         - "number_of_guests" (number): The maximum number of guests allowed at a listing.
         - "allows_pets" (boolean): Whether pets are allowed at a listing.
@@ -85,6 +86,12 @@ async def websocket_endpoint(websocket: WebSocket):
             temperature=0.2,
         ).choices[0].message.content)
         print(completion_response)
+        # Remove all fields from the completion_response object aside from the specified ones
+        allowed_fields = [
+            "number_of_guests", "allows_pets", "allows_smoking", "bedroom_count", 
+            "bed_count", "bathroom_label", "8", "1", "4", "5", "9", "30", "33", "34", "101", "new_query"
+        ]
+        completion_response = {key: value for key, value in completion_response.items() if key in allowed_fields}
         # except:
         #     pass
         

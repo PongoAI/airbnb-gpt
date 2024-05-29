@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RedWarningTrianlge } from './warningTriangles';
+import { OrangeWarningTrianlge, RedWarningTrianlge } from './warningTriangles';
 
 export default function SearchBar({ recommendations = [] }) {
     const [query, setQuery] = useState('');
@@ -12,8 +12,11 @@ export default function SearchBar({ recommendations = [] }) {
     const [searchParams, setSearchParams] = useState({})
     const [noData, setNoData] = useState(false)
     const [thinkingString, setThinkingString] = useState('')
+    const [showPriceWarning, setShowPriceWarning] = useState(false)
 
-    const SOCKET_URL = 'wss://smpl-backend.joinpongo.com/sockets/airbnb';
+    console.log(showPriceWarning)
+    const SOCKET_URL = 'ws://localhost:8000/sockets/airbnb';
+    // const SOCKET_URL = 'wss://smpl-backend.joinpongo.com/sockets/airbnb';
 
 
     useEffect(() => {
@@ -60,6 +63,13 @@ export default function SearchBar({ recommendations = [] }) {
     }
 
     const handleChange = (e) => {
+        const price_terms = ['price', 'cost', '$', 'usd', 'dollars', 'per night', 'under']
+        const containsPriceTerm = price_terms.some(term => e.target.value.toLowerCase().includes(term.toLowerCase()));
+        if (containsPriceTerm) {
+            setShowPriceWarning(true);
+        } else {
+            setShowPriceWarning(false)
+        }
         setQuery(e.target.value);
     };
 
@@ -124,8 +134,10 @@ export default function SearchBar({ recommendations = [] }) {
         output += `${keyString} ${value['operator']} ${value['valueNumber'] || value['valueBoolean'] || value['valueString']} \n`;
     }
     output = output.replace(/Equal/g, '=').replace(/GreaterThan/g, '>').replace(/LessThan/g, '<');
-    output = output.slice(0, -2); // Remove the trailing comma and space
-    return output;
+
+    if(output === 'Searching for listings with:\n') {
+        return ''
+    } else return output;
     }
 
     return (
@@ -142,7 +154,14 @@ export default function SearchBar({ recommendations = [] }) {
                                     Connection to server lost, please refresh the page
                                 </div>
                             </div>
-                        ) : null}
+                        ) : showPriceWarning ? <div className='text-orange-500 flex items-center w-fit h-fit mb-1 mt-auto'>
+                        <div className='w-4 h-4 mr-1 mt-0.5'>
+                            <OrangeWarningTrianlge />
+                        </div>
+                        <div className='flex sm:text-md text-sm items-center text-right'>
+                            Queries on price are not supported
+                        </div>
+                    </div>: null}
                     </div>
                     <div className="flex items-center align-middle">
                         <form className='w-full flex'>
