@@ -64,7 +64,7 @@ export default function SearchBar({ recommendations = [] }) {
     };
 
     const makeThinkingString = () => {
-    let output = 'Searching for listings with: '
+    let output = 'Searching for listings with:\n'
 
     for (const [key, value] of Object.entries(searchParams)) {
         if (typeof value !== 'object') {
@@ -121,10 +121,10 @@ export default function SearchBar({ recommendations = [] }) {
             default:
                 break;
         }
-        output += `${keyString} ${value['operator']} ${value['valueNumber'] || value['valueBoolean'] || value['valueString']}, `;
+        output += `${keyString} ${value['operator']} ${value['valueNumber'] || value['valueBoolean'] || value['valueString']} \n`;
     }
-    output = output.slice(0, -2) + ''; // Remove the trailing comma and space
-
+    output = output.replace(/Equal/g, '=').replace(/GreaterThan/g, '>').replace(/LessThan/g, '<');
+    output = output.slice(0, -2); // Remove the trailing comma and space
     return output;
     }
 
@@ -175,7 +175,7 @@ export default function SearchBar({ recommendations = [] }) {
                     {spinner && <div className="spinner">Loading...</div>}
                     {error && <div className="error">{errorMessage}</div>}
                     {noData && <div className='text-lg w-fit mx-auto mt-20 text-2xl font-semibold'>Couldn't find any listings for that query, please try another</div>}
-                    {thinkingString !== '' && <div className='mt-5  font-medium '>{thinkingString !== 'Thinking...' ? makeThinkingString(searchParams) : thinkingString}</div>}
+                    {thinkingString !== '' && <div className='mt-5 font-medium font-mono whitespace-pre-wrap mx-auto text-center'>{thinkingString !== 'Thinking...' ? makeThinkingString(searchParams) : thinkingString}</div>}
                     <div className="flex flex-wrap justify-center gap-x-20 gap-y-20 w-full mx-auto mt-10">
                         {listings.map((item, idx) => {
                             console.log(item)

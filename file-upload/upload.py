@@ -86,10 +86,10 @@ for listing in imported_json:
 
     
 embed_model = OpenAIEmbedding(model="text-embedding-3-small", api_key=os.getenv("OPENAI_APIKEY"), dimensions=1536)
-
+print(len(nodes))
 # nodes = nodes[:1000]
-nodes = nodes[1000:]
-# quit(0)
+# nodes = nodes[1000:]
+quit(0)
 
 for node in nodes:
     node_embedding = embed_model.get_text_embedding(
