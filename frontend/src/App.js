@@ -18,7 +18,7 @@ export default function App() {
       </div>
 
       <div className='w-fit mx-auto pt-10 mb-2 text-4xl font-semibold'>AirbnbGPT</div>
-      <div className='w-fit mx-auto text-zinc-400 text-center max-w-[90vw] text-md mb-3'>Semantic search demo through Airbnb listing reviews and descriptions. <br></br>Also filters by # bedrooms, # bathrooms, has stocked kitchen, washer/dryer, A/C, heaitng, etc.</div>
+      <div className='w-fit mx-auto text-zinc-400 text-center max-w-[90vw] text-md mb-3'>Semantic search demo through Airbnb listing reviews and descriptions. <br></br>Also filters by # bedrooms, # bathrooms, has stocked kitchen, washer/dryer, A/C, heating, etc.</div>
       <SearchBar recommendations={["Show me cozy listings with A/C, TV, and Wifi in San Francisco", "Futuristic listings with free parking and at least 3 beds", "Pet-friendly listings with a back yard"]} skipCohere={true}/>
 
 
