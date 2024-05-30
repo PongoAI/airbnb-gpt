@@ -15,8 +15,8 @@ export default function SearchBar({ recommendations = [] }) {
     const [showPriceWarning, setShowPriceWarning] = useState(false)
 
     console.log(showPriceWarning)
-    const SOCKET_URL = 'ws://localhost:8000/sockets/airbnb';
-    // const SOCKET_URL = 'wss://smpl-backend.joinpongo.com/sockets/airbnb';
+    // const SOCKET_URL = 'ws://localhost:8000/sockets/airbnb';
+    const SOCKET_URL = 'wss://smpl-backend.joinpongo.com/sockets/airbnb';
 
 
     useEffect(() => {
